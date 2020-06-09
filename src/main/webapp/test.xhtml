@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html">
@@ -40,30 +39,25 @@
 
 
         <p:growl id="growl" showSummary="true" showDetail="false">
-            <p:autoUpdate />
+            <p:autoUpdate/>
         </p:growl>
 
-        <div style="float:left; width: 130px;">
-            <strong>Drag and drop events</strong>
-            <p/>
-            <p:dataList id="orderList" value="#{groupingTimelineView.orderList}"
-                        var="order">
-                <h:panelGroup id="orderBox" layout="box" style="z-index:9999; cursor:move;">
-                    #{order.number}
-                </h:panelGroup>
-                <p:draggable for="orderBox" revert="true" helper="clone" cursor="move"/>
-            </p:dataList>
-        </div>
+        <strong>Drag and drop events</strong>
+        <p/>
+        <p:dataList id="orderList" value="#{groupingTimelineView.orderList}"
+                    var="order">
+            <h:panelGroup id="orderBox" layout="box" style="z-index:9999; cursor:move;">
+                #{order.number}
+            </h:panelGroup>
+            <p:draggable for="orderBox" revert="true" helper="clone" cursor="move"/>
+        </p:dataList>
+
 
         <p:timeline id="timeline" value="#{groupingTimelineView.model}" var="order" varGroup="truck"
                     editable="true" eventMargin="0" eventMarginAxis="0" stackEvents="false"
                     locale="de"
                     orientationAxis="top" widgetVar="timelineWdgt">
-            <p:ajax event="changed" update="@none" listener="#{groupingTimelineView.onChange}"/>
-            <p:ajax event="delete" update="@none" listener="#{groupingTimelineView.onDelete}"/>
-            <p:ajax event="add" update="@none" onstart="PF('timelineWdgt').cancelAdd()"/>
             <p:ajax event="drop" listener="#{groupingTimelineView.onDrop}" global="false" update="orderList"/>
-
 
             <f:facet name="group">
                 <h:outputText value="Truck #{truck.code}" style="font-weight:bold;"/>
@@ -71,32 +65,6 @@
             <h:outputText value="Order #{order.number}"/>
         </p:timeline>
 
-        <!-- Dialog with overlapped timeline events -->
-        <p:dialog id="overlapEventsDlg" header="Overlapped Orders" widgetVar="overlapEventsWdgt"
-                  showEffect="clip" hideEffect="clip">
-            <h:panelGroup id="overlappedOrdersInner" layout="block" style="padding:10px;">
-                <strong>
-                    Please choose Orders you want to merge with the Order #{groupingTimelineView.selectedOrder}
-                </strong>
-
-                <p/>
-
-                <p:selectManyMenu id="overlappedOrders" value="#{groupingTimelineView.ordersToMerge}"
-                                  showCheckbox="true">
-                    <f:selectItems value="#{groupingTimelineView.overlappedOrders}" var="order"
-                                   itemLabel=" Order #{order.data.number}" itemValue="#{order}"/>
-                </p:selectManyMenu>
-            </h:panelGroup>
-
-            <f:facet name="footer">
-                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
-                    <p:commandButton value="Merge" process="overlapEventsDlg" update="@none"
-                                     action="#{groupingTimelineView.merge}"
-                                     oncomplete="PF('overlapEventsWdgt').hide()"/>
-                    <p:commandButton type="button" value="Close" onclick="PF('overlapEventsWdgt').hide()"/>
-                </h:panelGroup>
-            </f:facet>
-        </p:dialog>
     </h:form>
 </h:body>
 </html>

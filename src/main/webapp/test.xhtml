@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <h:head>
-        <title>PrimeFaces Test</title>
-        <h:outputScript name="test.js" />
-    </h:head>
-    <h:body>
+<h:head>
+    <title>PrimeFaces Test</title>
+    <h:outputScript name="test.js"/>
+</h:head>
+<h:body>
 
-        <h1>#{testView.string}</h1>
-        <h:form id="frmTest">
+    <h1>#{testView.string}</h1>
+    <h:form id="frmTest">
+        <p:dataTable var="data" lazy="true"
+                     currentPageReportTemplate="records:{startRecord}-{endRecord} {totalRecords}"
+                     paginatorPosition="both"
+                     paginatorAlwaysVisible="true"
+                     rowsPerPageTemplate="30,50,100" rows="30" value="#{testView.testObjectCustomLazyDataModel}"
+                     paginator="true" widgetVar="dataTable" id="dataTable" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+            <f:facet name="{Exporters}">
+                <h:panelGroup style="float: right;display: inline-block; padding-top: 3px;">
+                    <p:commandLink ajax="false" value="export">
+                        <i class="pi pi-download"/>
+                        <p:dataExporter type="xlsx" target="dataTable"
+                                        exportHeader="true"
+                                        fileName="exportText.xlsx"/>
+                    </p:commandLink>
+                </h:panelGroup>
+            </f:facet>
+            <p:column width="10%">
+                <h:outputText value="#{data.id}"/>
+                <h:outputText value="#{data.name}"/>
+                <h:outputText value="#{data.released}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
 
-        </h:form>
-
-    </h:body>
+</h:body>
 </html>

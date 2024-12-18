@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core"
       xmlns:h="jakarta.faces.html"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:p="primefaces">
 
-    <h:head>
-        <title>PrimeFaces Test</title>
-        <h:outputScript name="test.js" />
-        <h:outputStylesheet name="test.css" />
-    </h:head>
-    <h:body>
+<h:head>
+    <title>PrimeFaces Test</title>
+    <h:outputScript name="test.js"/>
+    <h:outputStylesheet name="test.css"/>
+</h:head>
+<h:body>
 
-        <h1>#{testView.string}</h1>
-        <h:form id="frmTest">
+    <h1>#{testView.string}</h1>
+    <h:form id="frmTest">
+        <p:outputLabel value="DropDown" for="@next"/>
+        <p:autoComplete id="dd" dropdown="true" value="#{testView.selected}"
+                        completeMethod="#{testView.completeText}" scrollHeight="250"/>
 
-        </h:form>
-
-    </h:body>
+        <p:outputLabel value="DropDown Lazy" for="@next"/>
+        <p:autoComplete id="lazy"
+                        dropdown="true"
+                        value="#{testView.selected}"
+                        lazyModel="#{testView.lazyDataModel}"
+                        widgetVar="lazyAC"
+                        lazyField="name"
+                        forceSelection="true"
+                        multiple="true"
+                        maxResult="10"
+                        var="item"
+                        itemLabel="#{item.name}"
+                        itemValue="#{item.name}"
+                        scrollHeight="250">
+        </p:autoComplete>
+    </h:form>
+</h:body>
 </html>

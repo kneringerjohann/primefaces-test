@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core"
       xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
       xmlns:p="primefaces">
 
-    <h:head>
-        <title>PrimeFaces Test</title>
-        <h:outputScript name="test.js" />
-        <h:outputStylesheet name="test.css" />
-    </h:head>
-    <h:body>
+<h:head>
+    <title>PrimeFaces Test</title>
+    <h:outputScript name="test.js"/>
+    <h:outputStylesheet name="test.css"/>
+</h:head>
+<h:body>
 
-        <h1>#{testView.string}</h1>
-        <h:form id="frmTest">
-
-        </h:form>
-
-    </h:body>
+    <h1>#{testView.string}</h1>
+    <h:form id="frmTest">
+        <p:dataTable value="#{testView.list}" var="item">
+            <p:column headerText="ID">
+                <h:outputText value="#{item.id}"/>
+            </p:column>
+            <p:column headerText="Name">
+                <h:outputText value="#{item.name}"/>
+            </p:column>
+            <p:column headerText="Artist">
+                <h:outputText value="#{item.artist}"/>
+            </p:column>
+            <p:column headerText="Released">
+                <h:outputText value="#{item.released}"/>
+            </p:column>
+            <p:column headerText="Rating" sortFunction="#{testView.sortRatingEnum}" sortBy="#{item.ratingEnum}" sortOrder="asc" sortPriority="1">
+                <p:selectOneMenu id="variant"
+                                 value="#{item.ratingEnum}"
+                                 required="true">
+                <f:selectItems value="#{testView.retrieveRatings()}"
+                               var="variant"
+                               itemLabel="#{variant.label}" itemValue="#{variant}"/>
+                </p:selectOneMenu>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
 </html>
